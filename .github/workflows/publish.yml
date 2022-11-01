@@ -11,21 +11,21 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: windows-latest
-            platform: win32
-            arch: x64
-            npm_config_arch: x64
-            pyinstaller_cmd: pyinstaller model_server/app.spec model_server/app.py
-          # - os: ubuntu-latest
-          #   platform: linux
+          # - os: windows-latest
+          #   platform: win32
           #   arch: x64
           #   npm_config_arch: x64
           #   pyinstaller_cmd: pyinstaller model_server/app.spec model_server/app.py
-          - os: macos-latest
-            platform: darwin
+          - os: ubuntu-22.04
+            platform: linux
             arch: x64
             npm_config_arch: x64
             pyinstaller_cmd: pyinstaller model_server/app.spec model_server/app.py
+          # - os: macos-latest
+          #   platform: darwin
+          #   arch: x64
+          #   npm_config_arch: x64
+          #   pyinstaller_cmd: pyinstaller model_server/app.spec model_server/app.py
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
