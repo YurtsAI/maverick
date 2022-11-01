@@ -1,0 +1,90 @@
+# on: [push, pull_request]
+
+# jobs:
+#   build_job:
+#     # The host should always be linux
+#     runs-on: ubuntu-22.04
+#     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+
+#     # Run steps on a matrix of 3 arch/distro combinations
+#     strategy:
+#       matrix:
+#         include:
+#           - arch: aarch64
+#             distro: ubuntu22.04
+
+#     steps:
+#       - uses: actions/checkout@v2.1.0
+#       - uses: uraimo/run-on-arch-action@v2
+#         name: Build artifact
+#         id: build
+#         with:
+#           arch: ${{ matrix.arch }}
+#           distro: ${{ matrix.distro }}
+
+#           # Not required, but speeds up builds
+#           githubToken: ${{ github.token }}
+
+#           # Create an artifacts directory
+#           setup: |
+#             mkdir -p "${PWD}/tmp_model_server" && \
+#             cp -r "${PWD}/model_server/" "${PWD}/tmp_model_server/"
+
+#           # # Mount the artifacts directory as /artifacts in the container
+#           dockerRunArgs: |
+#             --volume "${PWD}/tmp_model_server:/tmp_model_server"
+
+#           # The shell to run commands with in the container
+#           shell: /bin/bash
+
+#           # Install some dependencies in the container. This speeds up builds if
+#           # you are also using githubToken. Any dependencies installed here will
+#           # be part of the container image that gets cached, so subsequent
+#           # builds don't have to re-install them. The image layer is cached
+#           # publicly in your project's package repository, so it is vital that
+#           # no secrets are present in the container state or logs.
+#           install: |
+#             case "${{ matrix.distro }}" in
+#               ubuntu*|jessie|stretch|buster|bullseye)
+#                 apt-get update -q -y
+#                 apt-get install -q -y git
+#                 apt-get install -q -y python3.10
+#                 apt install -q -y python3-pip
+#                 apt install -q -y wget
+#                 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+#                 export NVM_DIR="$HOME/.nvm"
+#                 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+#                 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+#                 nvm install 18.12.0
+#                 nvm alias default 18.12.0
+#                 nvm use default
+#                 apt install -q -y npm
+#                 ;;
+#               fedora*)
+#                 dnf -y update
+#                 dnf -y install git which
+#                 ;;
+#               alpine*)
+#                 apk update
+#                 apk add git
+#                 ;;
+#             esac
+
+#           run: |
+#             export NVM_DIR="$HOME/.nvm"
+#             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+#             [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+#             cd tmp_model_server && cd model_server && \
+#             pip3 install -r requirements.txt pyinstaller && \
+#             pyinstaller app_arm64.spec app.py && \
+#             cd ../.. && mkdir src/dist && mkdir src/dist/app  && \
+#             cp -r tmp_model_server/model_server/dist/app src/dist && \
+#             chown -R root /home/runner/work/maverick/maverick && \
+#             nvm use 18.12.0 && \
+#             npm install && \
+#             npx -y vsce package --target linux-arm64 --allow-star-activation
+
+#       - uses: actions/upload-artifact@v3
+#         with:
+#           name: linux-arm64
+#           path: "*.vsix"

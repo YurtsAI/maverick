@@ -1,0 +1,38 @@
+
+node_modules
+.vscode-test/
+*.vsix
+
+yarn.lock
+yarn-error.log
+
+/out-vsxi
+
+*.node
+
+/vscode.d.ts
+/vscode.proposed.d.ts
+vscode.d.ts
+/out
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+# Distribution / packaging
+bin/
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
