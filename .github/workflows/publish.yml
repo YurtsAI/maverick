@@ -33,11 +33,12 @@ jobs:
         with:
           node-version: 16
       - run: npm install
-        # - uses: actions/setup-python@v4
-        #   with:
-        #     python-version: "3.10"
-        # - run: pip install -r model_server/requirements.txt pyinstaller
-        # - run: ${{ matrix.pyinstaller_cmd }}
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - run: find . | grep -E "(__pycache__|\.pyc$)" | xargs rm -rf
+      - run: pip install -r model_server/requirements.txt pyinstaller
+      - run: ${{ matrix.pyinstaller_cmd }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           npm_config_arch: ${{ matrix.npm_config_arch }}
