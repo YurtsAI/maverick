@@ -9,3 +9,5 @@ package-lock.json
 tsconfig.json
 webpack.config.js
 model_server
+build
+.github

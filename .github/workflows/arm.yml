@@ -88,3 +88,16 @@
 #         with:
 #           name: linux-arm64
 #           path: "*.vsix"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+cd tmp_model_server/model_server && \
+pip3 install -r requirements.txt pyinstaller && \
+pyinstaller app_arm64.spec app.py && \
+cd ../.. && mkdir src/dist && mkdir src/dist/app  && \
+cp -r tmp_model_server/model_server/dist/app src/dist && \
+chown -R root /home/runner/work/maverick/maverick && \
+nvm use 18.12.0 && \
+npm install && \
+npx -y vsce package --target linux-arm64 --allow-star-activation

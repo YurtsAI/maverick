@@ -2,7 +2,7 @@
   "name": "maverick",
   "displayName": "Maverick",
   "description": "AI code generation at your fingertips",
-  "version": "0.2.4",
+  "version": "0.2.7",
   "publisher": "YurtsAI",
   "icon": "yurts.png",
   "homepage": "https://github.com/YurtsAI/maverick",
@@ -40,7 +40,7 @@
         "maverick.settings.port": {
           "type": "integer",
           "description": "Port to run model on",
-          "default": 9402
+          "default": 9401
         },
         "maverick.settings.maxTokens": {
           "type": "integer",

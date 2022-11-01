@@ -38,17 +38,19 @@ jobs:
           python-version: "3.10"
       - run: pip install -r model_server/requirements.txt pyinstaller
       - run: ${{ matrix.pyinstaller_cmd }}
-      - run: mkdir src/dist && mkdir src/dist/app && cp -R dist/app src/dist/app
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           npm_config_arch: ${{ matrix.npm_config_arch }}
       - shell: pwsh
         run: echo "target=${{ matrix.platform }}-${{ matrix.arch }}" >> $env:GITHUB_ENV
-      - run: npx vsce package --target ${{ env.target }}
-      - uses: actions/upload-artifact@v3
-        with:
-          name: ${{ env.target }}
-          path: "*.vsix"
+      - run: npx vsce publish --target ${{ env.target }}
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+      # - run: npx vsce package --target ${{ env.target }}
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     name: ${{ env.target }}
+      #     path: "*.vsix"
 
   arm64_build:
     runs-on: ubuntu-22.04
@@ -66,14 +68,14 @@ jobs:
           # Not required, but speeds up builds
           githubToken: ${{ github.token }}
 
-          # Create an artifacts directory
-          setup: |
-            mkdir -p "${PWD}/tmp_model_server" && \
-            cp -r "${PWD}/model_server/" "${PWD}/tmp_model_server/"
+          # # Create an artifacts directory
+          # setup: |
+          #   mkdir -p "${PWD}/tmp_model_server" && \
+          #   cp -r "${PWD}/model_server/" "${PWD}/tmp_model_server/"
 
-          # # Mount the artifacts directory as /artifacts in the container
-          dockerRunArgs: |
-            --volume "${PWD}/tmp_model_server:/tmp_model_server"
+          # # # Mount the artifacts directory as /artifacts in the container
+          # dockerRunArgs: |
+          #   --volume "${PWD}/tmp_model_server:/tmp_model_server"
 
           # The shell to run commands with in the container
           shell: /bin/bash
@@ -100,30 +102,28 @@ jobs:
             apt install -q -y npm
 
           run: |
+            export VSCE_PAT=${{ secrets.VSCE_PAT }}
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-            cd tmp_model_server/model_server && \
-            pip3 install -r requirements.txt pyinstaller && \
-            pyinstaller app_arm64.spec app.py && \
-            cd ../.. && mkdir src/dist && mkdir src/dist/app  && \
-            cp -r tmp_model_server/model_server/dist/app src/dist && \
+            pip3 install -r model_server/requirements.txt pyinstaller && \
+            pyinstaller model_server/app_arm64.spec model_server/app.py && \
             chown -R root /home/runner/work/maverick/maverick && \
             nvm use 18.12.0 && \
             npm install && \
-            npx -y vsce package --target linux-arm64 --allow-star-activation
+            npx vsce publish --target linux-arm64 darwin-arm64 --allow-star-activation
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: linux-arm64
-          path: "*.vsix"
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     name: linux-arm64
+      #     path: "*.vsix"
 
-  publish:
-    runs-on: ubuntu-latest
-    needs: [build, arm64_build]
-    if: success()
-    steps:
-      - uses: actions/download-artifact@v2
-      - run: npx vsce publish --packagePath $(find . -iname *.vsix)
-        env:
-          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+  # publish:
+  #   runs-on: ubuntu-latest
+  #   needs: [build]
+  #   if: success()
+  #   steps:
+  #     - uses: actions/download-artifact@v2
+  #     - run: npx vsce publish --packagePath $(find . -iname *.vsix)
+  #       env:
+  #         VSCE_PAT: ${{ secrets.VSCE_PAT }}
