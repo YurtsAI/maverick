@@ -20,7 +20,7 @@ jobs:
             platform: linux
             arch: x64
             npm_config_arch: x64
-            pyinstaller_cmd: pyinstaller model_server/app.spec model_server/app.py
+            pyinstaller_cmd: pyinstaller model_server/app_linux64.spec model_server/app.py
           # - os: macos-latest
           #   platform: darwin
           #   arch: x64
