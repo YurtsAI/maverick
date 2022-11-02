@@ -11,21 +11,18 @@ jobs:
     strategy:
       matrix:
         include:
-          # - os: windows-latest
-          #   platform: win32
-          #   arch: x64
-          #   npm_config_arch: x64
-          #   pyinstaller_cmd: pyinstaller model_server/app.spec model_server/app.py
+          - os: windows-latest
+            platform: win32
+            arch: x64
+            npm_config_arch: x64
           - os: ubuntu-22.04
             platform: linux
             arch: x64
             npm_config_arch: x64
-            pyinstaller_cmd: pyinstaller model_server/app.spec model_server/app.py
-          # - os: macos-latest
-          #   platform: darwin
-          #   arch: x64
-          #   npm_config_arch: x64
-          #   pyinstaller_cmd: pyinstaller model_server/app.spec model_server/app.py
+          - os: macos-latest
+            platform: darwin
+            arch: x64
+            npm_config_arch: x64
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -36,13 +33,15 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.10"
-      - run: find . | grep -E "(__pycache__|\.pyc$)" | xargs rm -rf
+      name: Install requirements.
       - run: pip install -r model_server/requirements.txt pyinstaller
-      - run: pip install torch --extra-index-url https://download.pytorch.org/whl/cpu
-      - run: ${{ matrix.pyinstaller_cmd }}
+      - run: pip install torch==1.12.1 --extra-index-url https://download.pytorch.org/whl/cpu
+      name: Create Python executable.
+      - run: pyinstaller model_server/app.spec model_server/app.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           npm_config_arch: ${{ matrix.npm_config_arch }}
+      name: Publish ${{ matrix.platform }}-${{ matrix.arch }}.
       - shell: pwsh
         run: echo "target=${{ matrix.platform }}-${{ matrix.arch }}" >> $env:GITHUB_ENV
       - run: npx vsce publish --target ${{ env.target }} --allow-star-activation
