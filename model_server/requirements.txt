@@ -51,8 +51,8 @@ requests==2.28.1
 six==1.16.0
 tokenizers==0.13.1
     # via transformers
-torch==1.12.1
-    # via -r requirements/base.in
+# torch==1.12.1
+#     # via -r requirements/base.in
 tqdm==4.64.1
     # via
     #   huggingface-hub
