@@ -2,10 +2,9 @@ import * as vscode from "vscode";
 
 type IConfig = {
   settings: {
-    sites: { [name: string]: boolean };
-    maxResults: number;
     port: number;
-    maxTokens: number;
+    maxTokensToGenerate: number;
+    numLinesForContext: number;
   };
 };
 
@@ -15,7 +14,8 @@ export function getConfig() {
   return {
     settings: {
       port: config.settings.port,
-      maxTokens: config.settings.maxTokens,
+      maxTokensToGenerate: config.settings.maxTokensToGenerate,
+      numLinesForContext: config.settings.numLinesForContext,
     },
   } as IConfig;
 }

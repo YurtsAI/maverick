@@ -1,8 +1,8 @@
 {
-  "name": "maverick",
+  "name": "maverick-python",
   "displayName": "Maverick",
   "description": "AI code generation at your fingertips",
-  "version": "0.2.8",
+  "version": "0.1.0",
   "publisher": "YurtsAI",
   "icon": "yurts.png",
   "homepage": "https://github.com/YurtsAI/maverick",
@@ -39,13 +39,18 @@
       "properties": {
         "maverick.settings.port": {
           "type": "integer",
-          "description": "Port to run model on",
+          "description": "Port to run model on.",
           "default": 9401
         },
-        "maverick.settings.maxTokens": {
+        "maverick.settings.maxTokensToGenerate": {
           "type": "integer",
-          "description": "Maximum number of tokens to generate",
-          "default": 64
+          "description": "Maximum number of tokens to generate. Increasing this value may increase inference latency.",
+          "default": 32
+        },
+        "maverick.settings.numLinesForContext": {
+          "type": "integer",
+          "description": "Number of Python lines to send for context. Increasing this value may increase inference latency.",
+          "default": 10
         }
       }
     },

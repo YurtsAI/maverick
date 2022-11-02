@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 
-import { predict } from "./utils/predict";
 import { loadModel } from "./utils/loadModel";
+import { predict } from "./utils/predict";
 
 loadModel();
 

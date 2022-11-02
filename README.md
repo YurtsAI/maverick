@@ -16,9 +16,11 @@ Table of contents:
     - [Installation](#installation)
       - [Common reasons why you can't run Maverick:](#common-reasons-why-you-cant-run-maverick)
       - [Still not running?](#still-not-running)
+      - [Slow?](#slow)
   - [2. How to use](#2-how-to-use)
     - [Inline Completion using AI](#inline-completion-using-ai)
-  - [3. Changelog](#3-changelog)
+  - [3. Advanced Settings](#3-advanced-settings)
+  - [4. Changelog](#4-changelog)
 
 ---
 
@@ -26,7 +28,13 @@ Table of contents:
 
 ### System Requirements
 
-Currently, Maverick can be ran on `linux/arm64`, `linux/amd64`, and `windows/amd64` platforms, i.e., MacOS Intel 64-bit/MacOS M-Series/Windows 64-bit. This is because `PyTorch` (a dependency for the Maverick model) requires 64-bit precision to be ran.
+Maverick can be installed on the following platforms:
+
+- `windows-x64` (Windows 64-bit)
+- `darwin-x64` (macOS 64-bit Intel)
+- `darwin-arm64` (macOS M-Series)
+- `linux-x64`
+- `linux-arm64`
 
 ### Installation
 
@@ -36,6 +44,7 @@ Have questions or issues with install? Join our [Discord server](https://discord
 
 #### Common reasons why you can't run Maverick:
 
+- Port is not available. If this is the case, hit `CMD/CTRL + SHIFT + P` and type `Settings`. Then, select `Open Settings (UI)` and search `Maverick port`. By default, the Maverick model runs on port `9401`, but you can change this to whichever port you prefer.
 - When pressing `Run debugger`, it shows different target options (nodejs, edge, etc.). Your VSCode root directory might be incorrect. Make sure your root directory is the folder in which the `package.json` file is.
 - Error message `module "node-fetch" not found...`. You need to run `npm install`.
 - `canvas.node` was compiled against a different Node.js. [Try to remove canvas](https://github.com/hieunc229/copilot-clone/issues/9) (`npm uninstall canvas`)
@@ -46,6 +55,10 @@ Have questions or issues with install? Join our [Discord server](https://discord
 - It might conflict with some other plugins. You might need to disable plugins to check
 
 If none of the above works, open a thread or join our [Discord channel and have a chat](https://discord.gg/qgUprRUX).
+
+#### Slow?
+
+If latency is an issue, try to decrease `maxTokensToGenerate` or `numLinesForContext` in your VSCode settings. To access these settings, hit `CMD/CTRL + SHIFT + P` and type `Settings`. Then, select `Open Settings (UI)` and search `Maverick`. For more information, see [Advanced Setttings](#3-advanced-settings).
 
 ## 2. How to use
 
@@ -61,7 +74,19 @@ class LinkedList:
 
 Hitting `cmd + shift + m` or `ctrl + shift + m` would then send the prediction request to Maverick. (_You can tell a prediction is in progress if the Status Message in the bottom left of VSCode reads "Maverick generating code..."_) The prediction will then render as an inline suggestion!
 
-## 3. Changelog
+## 3. Advanced Settings
+
+Maverick comes equipped with three tunable settings depending on a user's desired workflow, including:
+
+- `port`: Defaults to `9401`, the port where the Maverick model will be hosted.
+- `maxTokensToGenerate`: Defaults to `32`, the number of tokens you would like to generate for every Maverick prediction. A token is similar to a word, but sometimes may be smaller.
+- `numLinesForContext`: Defaults to `10`, the number of previous lines of code to send as context for every Maverick prediction.
+
+> **WARNING**: Latency is positively correlated with `maxTokensToGenerate` and `numLinesForContext`, i.e., increasing these values may increase latency and vise versa.
+
+Feel free to modify these settings to best fit your workflow.
+
+## 4. Changelog
 
 - Nov 02, 2022 - Publish the initial version
 

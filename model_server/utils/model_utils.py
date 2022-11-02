@@ -5,6 +5,8 @@ import tarfile
 import requests
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
+PAD_TOKEN_ID = 50256
+
 
 def unpack_model(
     tar_path: str, destination_dir: str = "./", is_remote: bool = True
@@ -17,7 +19,7 @@ def unpack_model(
         file = tarfile.open(tar_path.split("/")[-1])
         file.extractall(destination_dir)
         file.close()
-    except:
+    except Exception:
         success = False
     return success
 
@@ -29,12 +31,17 @@ def load_model(
     hf_id: str = "YurtsAI/yurts-python-code-gen-30-sparse",
 ):
     """Loads model from bucket or local file path."""
-    success = unpack_model(tar_path=f"{bucket}/{model_file}", is_remote=is_remote)
+    success = unpack_model(
+        tar_path=f"{bucket}/{model_file}",
+        is_remote=is_remote,
+    )
     if not success:
         model_file = hf_id
 
     model = AutoModelForCausalLM.from_pretrained(model_file, torchscript=True)
     model = model.eval()
     tokenizer = AutoTokenizer.from_pretrained(model_file)
+    tokenizer.pad_token = PAD_TOKEN_ID
+    tokenizer.padding_side = "left"
 
     return model, tokenizer

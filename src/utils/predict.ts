@@ -11,10 +11,15 @@ export async function predict(
     "Maverick generating code..."
   );
   const config = getConfig();
+  const numLinesForContext = config.settings.numLinesForContext;
+  const maxTokensToGenerate = config.settings.maxTokensToGenerate;
 
   const diff = (s1: string, s2: string) => s1.split(s2).join("");
 
-  const startContextLine = position.line >= 15 ? position.line - 15 : 0;
+  const startContextLine =
+    position.line >= numLinesForContext
+      ? position.line - numLinesForContext
+      : 0;
   const contextText = document.getText(
     new vscode.Range(new vscode.Position(startContextLine, 0), position)
   );
@@ -26,7 +31,7 @@ export async function predict(
     },
     body: JSON.stringify({
       text: contextText,
-      numTokens: config.settings.maxTokens,
+      numTokens: maxTokensToGenerate,
     }),
   });
   const result = await response.json();

@@ -5,6 +5,7 @@
 #    pip-compile --output-file=requirements.txt requirements/base.in
 #
 --extra-index-url https://pip.repos.neuron.amazonaws.com
+--extra-index-url https://download.pytorch.org/whl/cpu
 
 certifi==2022.9.24
     # via requests
@@ -51,7 +52,7 @@ requests==2.28.1
 six==1.16.0
 tokenizers==0.13.1
     # via transformers
-# torch==1.12.1
+torch==1.12.1
 #     # via -r requirements/base.in
 tqdm==4.64.1
     # via
