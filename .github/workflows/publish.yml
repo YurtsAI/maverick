@@ -45,7 +45,7 @@ jobs:
           npm_config_arch: ${{ matrix.npm_config_arch }}
       - shell: pwsh
         run: echo "target=${{ matrix.platform }}-${{ matrix.arch }}" >> $env:GITHUB_ENV
-      # - run: npx vsce publish --target ${{ env.target }} --allow-star-activation
+      - run: npx vsce publish --target ${{ env.target }} --allow-star-activation
       - run: ls -lh dist/app
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
