@@ -12,8 +12,7 @@ export async function loadModel() {
     `Maverick launching on port ${port}. Please wait a few minutes for Maverick to load and configure.`
   );
 
-  // const modelExecutable = path.resolve(__dirname.slice(0, -4), "dist/app/app");
-  const modelExecutable = path.resolve(__dirname.slice(0, -9), "dist/app/app");
+  const modelExecutable = path.resolve(__dirname.slice(0, -4), "dist/app/app");
   exec(modelExecutable, (error, stdout, stderror) =>
     console.log(error, stdout, stderror)
   );
