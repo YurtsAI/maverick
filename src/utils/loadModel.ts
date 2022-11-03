@@ -1,9 +1,9 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import { exec } from "child_process";
-import fetch from "node-fetch";
 
 import { getConfig } from "../config";
+import { checkServer } from "./checkServer";
 
 export async function loadModel() {
   const config = getConfig();
@@ -21,17 +21,8 @@ export async function loadModel() {
   vscode.window.showInformationMessage("Model downloading. Please wait.");
 
   const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-  async function checkServer() {
-    return await fetch(`http://localhost:${port}`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    }).then((res) => res.text());
-  }
 
-  // Allow model to load/deploy for up to 10 minutes
+  // Allow model to load/deploy for up to 20 minutes
   // 240 polls * 5000 ms = 1200000 ms = 20 minutes
   const disposable = vscode.window.setStatusBarMessage(
     "Maverick loading... This message will auto-clear when it is ready."
@@ -39,7 +30,7 @@ export async function loadModel() {
   let poll = 240;
   while (!isModelReady && poll > 0) {
     try {
-      const serverResponse = await checkServer();
+      const serverResponse = await checkServer(port);
       isModelReady =
         serverResponse ===
         "Maverick loaded properly. Use POST methods to retrieve predictions.";

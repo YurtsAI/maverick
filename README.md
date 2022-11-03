@@ -2,7 +2,7 @@
 
 [![Maverick on Marketplace](https://vsmarketplacebadge.apphb.com/version/YurtsAI.maverick.svg)](https://marketplace.visualstudio.com/items?itemName=YurtsAI.maverick) [![Maverick on Marketplace](https://vsmarketplacebadge.apphb.com/installs-short/YurtsAI.maverick.svg)](https://marketplace.visualstudio.com/items?itemName=YurtsAI.maverick) [![Discord Chat](https://img.shields.io/discord/1032744296471855124.svg)](https://discord.gg/qgUprRUX)
 
-Maverick is an code completion tool powered by AI. Built at Yurts, Maverick focuses on delivering the best code completion on your local machine without reaching out to any APIs or knowledge bases. Best of all? It's **free**.
+Maverick is a code completion tool powered by AI. Built at [Yurts](https://www.yurts.ai/), Maverick focuses on delivering the best code completion on your local machine without reaching out to any APIs or knowledge bases. Best of all? It's **free**.
 
 ![Demo Video](./demo.gif)
 
@@ -40,14 +40,15 @@ Maverick can be installed on the following platforms:
 
 During installation, the Maverick packaged application as well as the code completion model is downloaded. Installation can take ~10 minutes and may vary based off internet speed and compute resources.
 
+> **DISCLAIMER**: Inference speeds may be slow, but we are actively working to further optimize them. Please be patient and see [Advanced Settings](#3-advanced-settings) to configure Maverick to best suit your computer's architecture.
+
 Have questions or issues with install? Join our [Discord server](https://discord.gg/qgUprRUX) or file a Github [Issue](https://github.com/YurtsAI/maverick/issues).
 
 #### Common reasons why you can't run Maverick:
 
-- Port is not available. If this is the case, hit `CMD/CTRL + SHIFT + P` and type `Settings`. Then, select `Open Settings (UI)` and search `Maverick port`. By default, the Maverick model runs on port `9401`, but you can change this to whichever port you prefer.
+- Port is not available. If this is the case, hit `cmd/crtl + shift + p` and type `"Settings"`. Then, select `Open Settings (UI)` and search `"Maverick port"`. By default, the Maverick model runs on port `9401`, but you can change this to whichever port you prefer.
 - When pressing `Run debugger`, it shows different target options (nodejs, edge, etc.). Your VSCode root directory might be incorrect. Make sure your root directory is the folder in which the `package.json` file is.
 - Error message `module "node-fetch" not found...`. You need to run `npm install`.
-- `canvas.node` was compiled against a different Node.js. [Try to remove canvas](https://github.com/hieunc229/copilot-clone/issues/9) (`npm uninstall canvas`)
 
 #### Still not running?
 
@@ -58,7 +59,7 @@ If none of the above works, open a thread or join our [Discord channel and have 
 
 #### Slow?
 
-If latency is an issue, try to decrease `maxTokensToGenerate` or `numLinesForContext` in your VSCode settings. To access these settings, hit `CMD/CTRL + SHIFT + P` and type `Settings`. Then, select `Open Settings (UI)` and search `Maverick`. For more information, see [Advanced Setttings](#3-advanced-settings).
+If latency is an issue, try to decrease `maxTokensToGenerate` or `numLinesForContext` in your VSCode settings. To access these settings, hit `cmd/ctrl + shift + p` and type `"Settings"`. Then, select `Open Settings (UI)` and search `"Maverick"`. For more information, see [Advanced Setttings](#3-advanced-settings).
 
 ## 2. How to use
 
@@ -88,6 +89,7 @@ Feel free to modify these settings to best fit your workflow.
 
 ## 4. Changelog
 
+- Nov 03, 2022 - Add deload model logic
 - Nov 02, 2022 - Publish the initial version
 
-**_Love Maverick? Please drop us a star :) and expand the yurt._**
+**_Love Maverick? Please drop us a star :) and expand the [yurt](https://www.yurts.ai/)._**

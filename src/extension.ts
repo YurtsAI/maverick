@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 
 import { loadModel } from "./utils/loadModel";
 import { predict } from "./utils/predict";
+import { deloadModel } from "./utils/deloadModel";
 
 loadModel();
 
@@ -64,4 +65,8 @@ export function activate(context: vscode.ExtensionContext) {
     { pattern: "**" },
     provider
   );
+}
+
+export async function deactivate() {
+  await deloadModel();
 }
