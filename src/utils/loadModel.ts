@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import { exec } from "child_process";
+import { platform, arch } from "process";
 
 import { getConfig } from "../config";
 import { checkServer } from "./checkServer";
@@ -12,8 +13,13 @@ export async function loadModel() {
     `Maverick launching on port ${port}. Please wait a few minutes for Maverick to load and configure.`
   );
 
-  const modelExecutable = path.resolve(__dirname.slice(0, -4), "dist/app/app");
-  exec(modelExecutable, (error, stdout, stderror) =>
+  const modelExecutableFile =
+    `${platform}-${arch}` === "win32-x64" ? "dist/app/app.exe" : "dist/app/app";
+  const modelExecutablePath = path.resolve(
+    __dirname.slice(0, -4),
+    modelExecutableFile
+  );
+  exec(modelExecutablePath, (error, stdout, stderror) =>
     console.log(error, stdout, stderror)
   );
 
