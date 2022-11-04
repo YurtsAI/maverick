@@ -13,15 +13,14 @@ export async function loadModel() {
     `Maverick launching on port ${port}. Please wait a few minutes for Maverick to load and configure.`
   );
 
-  const modelExecutableFile =
-    `${platform}-${arch}` === "win32-x64" ? "dist/app/app.exe" : "dist/app/app";
+  const isWindows = `${platform}-${arch}` === "win32-x64";
+  const modelExecutableFile = isWindows ? "dist/app/app.exe" : "dist/app/app";
   const modelExecutablePath = path.resolve(
     __dirname.slice(0, -4),
     modelExecutableFile
   );
-  exec(modelExecutablePath, (error, stdout, stderror) =>
-    console.log(error, stdout, stderror)
-  );
+  const cmd = isWindows ? `"${modelExecutablePath}"` : modelExecutablePath;
+  exec(cmd, (error, stdout, stderror) => console.log(error, stdout, stderror));
 
   let isModelReady = false;
   vscode.window.showInformationMessage("Model downloading. Please wait.");

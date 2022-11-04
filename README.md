@@ -30,11 +30,12 @@ Table of contents:
 
 Maverick can be installed on the following platforms:
 
-- `windows-x64` (Windows 64-bit)
 - `darwin-x64` (macOS 64-bit Intel)
 - `darwin-arm64` (macOS M-Series)
 - `linux-x64`
 - `linux-arm64`
+
+**November 4, 2022**: We have also released Maverick on `windows-x64` (Windows 64-bit) but have noticed issues regarding installation across various systems. We are actively trying to address these bugs, so please be patient. For now, we omit `windows-x64` from our recommended and supported platforms.
 
 ### Installation
 
